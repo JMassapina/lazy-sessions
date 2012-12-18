@@ -1,0 +1,27 @@
+{
+  "name": "lazy-sessions",
+  "version": "0.0.0",
+  "description": "Lazy loaded sessions for express",
+  "main": "lib/middleware.js",
+  "scripts": {
+    "test": "mocha -R list test",
+    "debug-test": "mocha --debug-brk test"
+  },
+  "repository": "",
+  "author": {
+    "name": "Ciaran Wood",
+    "email": "cyrzinsomnia@gmail.com"
+  },
+  "license": "BSD",
+  "dependencies": {
+    "underscore": "1.4.3",
+    "cuid": "1.1.7",
+    "cookie-signature": "0.0.1"
+  },
+  "devDependencies": {
+    "openport": "0.0.3",
+    "mocha": "1.7.4",
+    "express": "~3.0.4",
+    "request": "~2.12.0"
+  }
+}
