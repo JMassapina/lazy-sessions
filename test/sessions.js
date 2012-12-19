@@ -16,13 +16,10 @@ before(function(done) {
     }));
     
     app.get('/', function(req, res) {
-        // console.log('request rcd');
         res.send(200);
     });
     
     app.get('/session', function(req, res) {
-        // console.log('request rcd');
-        debugger;
         req.session.get(function(err, data) {
             if (err) return res.send(500);
             
@@ -105,6 +102,28 @@ describe('Session', function() {
             assert.equal(resp.statusCode, 200);
             assert.equal(data, '{}');
             done(err);
+        });
+    });
+    
+    it('rejects tampered cookies', function(done) {
+        var jar = request.jar();
+        request.post(host + '/store', {jar: jar}, function(err, resp, data) {
+            assert.equal(resp.statusCode, 200);
+            
+            var cookie = request.cookie(resp.headers['set-cookie'][0]);
+            var parts = cookie.value.split('.');
+            parts[0] = 'nonsense';
+            cookie.value = parts.join('.');
+            
+            jar.add(cookie);
+            
+            request(host + '/session', {jar: jar}, function(err, resp, data) {
+                assert.equal(resp.statusCode, 500);
+                assert.equal(1, resp.headers['set-cookie'].length);
+                assert.equal('sessionId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT', resp.headers['set-cookie'][0]);
+                done(err);
+            });
+            
         });
     });
     
