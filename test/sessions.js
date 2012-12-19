@@ -91,7 +91,7 @@ describe('lazy-sessions', function() {
             
             request(host + '/session', {}, function(err, resp, data) {
                 assert.equal(resp.statusCode, 200);
-                assert.equal(data, '{\n  "testing": "123"\n}');
+                assert.equal(data, '{\n  "cookie": {\n    "maxAge": null\n  },\n  "testing": "123"\n}');
                 done(err);
             });
         });
@@ -100,7 +100,7 @@ describe('lazy-sessions', function() {
     it('does not expose others sessions', function(done) {
         request(host + '/session', {jar: false}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
-            assert.equal(data, '{}');
+            assert.equal(data, '{\n  "cookie": {\n    "maxAge": null\n  }\n}');
             done(err);
         });
     });
