@@ -2,6 +2,9 @@
 
 A simple middleware for express that is conservative about when it creates and fetches sessions. The connect-provided session middleware always creates a session and always reads it from the backing store upon every request. This middleware gives you control about when it creates sessions and when to retrieve the session from the store. This is useful when you have a backing store that requires a network hop to access.
 
+## installation
+    npm install lazy-sessions
+
 ## usage
 Add as an express middleware:
 
