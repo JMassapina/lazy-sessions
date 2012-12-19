@@ -10,7 +10,9 @@ Add as an express middleware:
     
     app.use(express.cookieParser());
     app.use(require('lazy-sessions')({
-        secret: 'keyboard cat'
+        secret: 'keyboard cat', //required, secret to sign cookies with
+        maxAge: 1000 * 60 * 30, //cookie max age in ms, default is null which creates a browser-session cookie
+        store: myCustomStore //plug in your own store implementations, defaults to an in memory store
     }));
 
 Once the middleware is mounted, it is available on the request object as `session`.
@@ -25,3 +27,10 @@ Gets the session from the underlying store. Creates the session if it does not e
 
 Clears the session and removes the session cookie. Callback recieves `err` as parameter.
 
+## session stores
+
+Existing connect session store implementations can be used, or you can create your own. The store must implement:
+
+- `.get(sid, callback)`
+- `.set(sid, session, callback)`
+- `.destroy(sid, callback)`
