@@ -67,8 +67,8 @@ after(function() {
     server.close();
 })
 
-describe('Session', function() {
-    it('is not created on first request', function(done) {
+describe('lazy-sessions', function() {
+    it('does not create sessions on first request', function(done) {
         request(host + '/', {}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
             assert.equal(resp.headers['set-cookie'], undefined);
@@ -76,7 +76,7 @@ describe('Session', function() {
         });
     });
     
-    it('is created correctly', function(done) {
+    it('creates sessions correctly', function(done) {
         request(host + '/session', {}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
             assert.equal(1, resp.headers['set-cookie'].length);
@@ -85,7 +85,7 @@ describe('Session', function() {
         });
     });
     
-    it('stores data between requests', function(done) {
+    it('stores data between requests in a sesions', function(done) {
         request.post(host + '/store', {}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
             
@@ -105,7 +105,7 @@ describe('Session', function() {
         });
     });
     
-    it('rejects tampered cookies', function(done) {
+    it('rejects tampered session cookies', function(done) {
         var jar = request.jar();
         request.post(host + '/store', {jar: jar}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
@@ -127,7 +127,7 @@ describe('Session', function() {
         });
     });
     
-    it('should destroy sessions', function(done) {
+    it('destroys sessions correctly', function(done) {
         request.post(host + '/destroy', {}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
             assert.equal(1, resp.headers['set-cookie'].length);
