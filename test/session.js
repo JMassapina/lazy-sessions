@@ -3,13 +3,14 @@ var Session = require('../lib/session'),
     sinon = require('sinon');
 
 describe('Session', function() {
-    var spy, store;
+    var spies = {}, store;
     
     beforeEach(function() {
-        spy = sinon.spy();
+        spies.set = sinon.spy();
+        spies.touch = sinon.spy();
         store = {
             set: function(key, value, cb) {
-                spy();
+                spies.set();
                 cb();
             },
             get: function(key, cb) {
@@ -17,11 +18,17 @@ describe('Session', function() {
             },
             destroy: function(key, cb) {
                 cb();
+            },
+            touch: function(key, sessionDuration, cb) {
+                spies.touch();
+                cb();
             }
         };
     });
     afterEach(function() {
-        spy.reset();
+        for (var spy in spies) {
+            spies[spy].reset();
+        }
     });
     
     describe('#save()', function() {
@@ -31,7 +38,7 @@ describe('Session', function() {
             testObj.get(function(err, data) {
                 data.test = 'value';
                 testObj.save(function() {
-                    assert(spy.called);
+                    assert(spies.set.called);
                     done();
                 });
             })
@@ -42,7 +49,18 @@ describe('Session', function() {
             
             testObj.get(function(err, data) {
                 testObj.save(function() {
-                    assert(!spy.called);
+                    assert(!spies.set.called);
+                    done();
+                });
+            })
+        });
+        
+        it('calls touch on the store when the session data is unchanged and maxAge is defined', function(done) {
+            var testObj = new Session('sessionId', store, 9000000);
+            
+            testObj.get(function(err, data) {
+                testObj.save(function() {
+                    assert(spies.touch.called);
                     done();
                 });
             })

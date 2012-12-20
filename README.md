@@ -40,5 +40,5 @@ Existing connect session store implementations can be used, or you can create yo
 
 If stores use the maxAge property of the session cookie to do expiration of session data, they should also implement a touch function. This is used when a request with an associated session is received, but the session data is unchanged. This function is optional.
 
-- `.touch(sid, callback)`
+- `.touch(sid, sessionDuration, callback)`
 
