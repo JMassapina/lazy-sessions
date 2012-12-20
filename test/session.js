@@ -8,12 +8,14 @@ describe('Session', function() {
     beforeEach(function() {
         spies.set = sinon.spy();
         spies.touch = sinon.spy();
+        spies.get = sinon.spy();
         store = {
             set: function(key, value, cb) {
                 spies.set();
                 cb();
             },
             get: function(key, cb) {
+                spies.get();
                 cb();
             },
             destroy: function(key, cb) {
@@ -39,7 +41,7 @@ describe('Session', function() {
                 data.test = 'value';
                 testObj.save(function() {
                     assert(spies.set.called);
-                    done();
+                    done(err);
                 });
             })
         });
@@ -50,7 +52,7 @@ describe('Session', function() {
             testObj.get(function(err, data) {
                 testObj.save(function() {
                     assert(!spies.set.called);
-                    done();
+                    done(err);
                 });
             })
         });
@@ -61,7 +63,7 @@ describe('Session', function() {
             testObj.get(function(err, data) {
                 testObj.save(function() {
                     assert(spies.touch.called);
-                    done();
+                    done(err);
                 });
             })
         });
@@ -72,6 +74,22 @@ describe('Session', function() {
             var testObj = new Session('sessionId', store);
             testObj.once('destroy', done);
             testObj.clear();
+        });
+    });
+    
+    describe('#get()', function() {
+        it('only contacts the session store once and then caches the result', function(done) {
+            var testObj = new Session('sessionId', store);
+            testObj.get(function(err, data) {
+                if (err) {
+                    return done(err);
+                }
+                
+                testObj.get(function(err, data) {
+                    assert(spies.get.calledOnce);
+                    done(err);
+                });
+            })
         });
     });
 })
