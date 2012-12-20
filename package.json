@@ -4,7 +4,7 @@
   "description": "Lazy loaded sessions for express",
   "main": "lib/middleware.js",
   "scripts": {
-    "test": "mocha -R list test",
+    "test": "NODE_ENV=test mocha -R list test",
     "debug-test": "mocha --debug-brk test"
   },
   "repository": "",
