@@ -29,12 +29,11 @@ module.exports = function createServer(middlewareConfig, cb) {
     });
     
     app.post('/destroy', function(req, res) {
-        req.session.clear(function(err) {
+        req.destroySession(function(err) {
             if (err) return res.send(500);
             
             res.send(200);
         });
-        
     });
     
     openport.find({

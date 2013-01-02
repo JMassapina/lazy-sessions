@@ -16,7 +16,8 @@
   "dependencies": {
     "underscore": "1.4.3",
     "cuid": "1.1.7",
-    "cookie-signature": "0.0.1"
+    "cookie-signature": "0.0.1",
+    "cookie": "0.0.5"
   },
   "devDependencies": {
     "openport": "0.0.3",

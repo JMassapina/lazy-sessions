@@ -94,6 +94,15 @@ describe('lazy-sessions', function() {
         });
     });
     
+    it('does not create sessions when destroying sessions', function(done) {
+        var jar = request.jar();
+        request.post(host + '/destroy', {jar: jar}, function (err, resp, data) {
+            assert.equal(resp.statusCode, 200);
+            assert.equal(1, resp.headers['set-cookie'].length);
+            done(err);
+        });
+    });
+    
     describe('with time based session expiry', function() {
         var port, server, host;
         before(function(done) {

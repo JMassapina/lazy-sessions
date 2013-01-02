@@ -29,6 +29,7 @@ Gets the session from the underlying store. Creates the session if it does not e
 `session.clear(cb)`
 
 Clears the session and removes the session cookie. Callback recieves `err` as parameter.
+Alternatively, you can clear the session without getting it by calling `destroySession` on the http `request`.
 
 ## session stores
 
