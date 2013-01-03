@@ -12,7 +12,7 @@
     "name": "Ciaran Wood",
     "email": "cyrzinsomnia@gmail.com"
   },
-  "license": "BSD",
+  "license": "MIT",
   "dependencies": {
     "underscore": "1.4.3",
     "cuid": "1.1.7",
