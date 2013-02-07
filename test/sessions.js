@@ -44,10 +44,11 @@ describe('lazy-sessions', function() {
     });
     
     it('stores data between requests in a sesions', function(done) {
-        request.post(host + '/store', {}, function(err, resp, data) {
+        var jar = request.jar();
+        request.post(host + '/store', {jar: jar}, function(err, resp, data) {
             assert.equal(resp.statusCode, 200);
             
-            request(host + '/session', {}, function(err, resp, data) {
+            request(host + '/session', {jar: jar}, function(err, resp, data) {
                 assert.equal(resp.statusCode, 200);
                 assert.equal(data, '{"cookie":{"maxAge":null},"testing":"123"}');
                 done(err);
